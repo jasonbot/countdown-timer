@@ -14,7 +14,7 @@ class CountdownTimer(object):
         self.nye = datetime.datetime(year, 1, 1, 0, 0, 0)
         print self.nye
         pygame.init()
-        self.screen = pygame.display.set_mode((800, 600)) #, pygame.FULLSCREEN)
+        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         self.canvas = pygame.Surface(self.screen.get_size())
         self.fonts = [pygame.font.Font("SourceSansPro-Regular.ttf", 86),
                       pygame.font.Font("SourceSansPro-Regular.ttf", 108),
@@ -22,8 +22,6 @@ class CountdownTimer(object):
                       pygame.font.Font("SourceSansPro-Bold.ttf", 72)]
         if os.path.isfile('bgimage.jpg'):
             self.image = pygame.image.load('bgimage.jpg')
-            #if (self.image.get_height() < self.screen.get_height() or
-            #    self.image.get_width() < self.screen.get_width()):
             self.image = pygame.transform.smoothscale(self.image,
                     (self.screen.get_width(), self.screen.get_height()))
         else:
@@ -79,11 +77,15 @@ class CountdownTimer(object):
         for item in pygame.event.get():
             if ((item.type == pygame.QUIT) or
                 (item.type == pygame.KEYUP and item.key == pygame.K_ESCAPE)):
-                sys.exit()
+                raise Exception("BYE")
     def loop(self):
-        while not timer.done:
-            self.tick()
-            time.sleep(0.125)
+        try:
+            while not timer.done:
+                self.tick()
+                time.sleep(0.125)
+        except:
+            pass
+        pygame.quit()
     @property
     def timeleft(self):
         if datetime.datetime.now() > self.nye:
