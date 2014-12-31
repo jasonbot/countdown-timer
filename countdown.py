@@ -47,8 +47,13 @@ class CountdownTimer(object):
     @property
     def graphic(self):
         font = self.font
-        tlines = self.timeleft.split("\n")
-        graphics = [font.render(line, 1, (0, 0, 0)) for line in tlines]
+        timeleft = self.timeleft
+        color = (0, 0, 0)
+        if timeleft.startswith("!"):
+            timeleft = timeleft[1:]
+            color = (255, 255, 255)
+        tlines = timeleft.split("\n")
+        graphics = [font.render(line, 1, color) for line in tlines]
         wd = max(g.get_width() for g in graphics)
         ht = sum(g.get_height() for g in graphics)
         surf = pygame.Surface((wd, ht), flags=pygame.SRCALPHA)
@@ -89,7 +94,10 @@ class CountdownTimer(object):
     @property
     def timeleft(self):
         if datetime.datetime.now() > self.nye:
-            return "HAPPY\nNEW\nYEAR"
+            prefix = ""
+            if int(time.time() * 2) % 2 == 0:
+                prefix = "!"
+            return prefix + "HAPPY\nNEW\nYEAR"
         delta = self.nye - datetime.datetime.now()
         returnstringlist = []
         days, seconds = delta.days, delta.seconds
