@@ -12,7 +12,7 @@ class CountdownTimer(object):
         if now.month < 2:
             year = now.year
         self.nye = datetime.datetime(year, 1, 1, 0, 0, 0)
-        print self.nye
+    def startup(self):
         pygame.init()
         self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         self.canvas = pygame.Surface(self.screen.get_size())
@@ -26,7 +26,7 @@ class CountdownTimer(object):
                     (self.screen.get_width(), self.screen.get_height()))
         else:
             self.bg = None
-        pygame.display.set_caption("Countdown to {}".format(year))
+        pygame.display.set_caption("Countdown to {}".format(self.nye.year))
         pygame.mouse.set_visible(0)
     @property
     def font(self):
@@ -84,6 +84,7 @@ class CountdownTimer(object):
                 (item.type == pygame.KEYUP and item.key == pygame.K_ESCAPE)):
                 raise Exception("BYE")
     def loop(self):
+        self.startup()
         try:
             while not timer.done:
                 self.tick()
