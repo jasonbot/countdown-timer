@@ -12,6 +12,7 @@ class CountdownTimer(object):
         if now.month < 2:
             year = now.year
         self.nye = datetime.datetime(year, 1, 1, 0, 0, 0)
+        self.image = None
     def startup(self):
         pygame.init()
         self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
@@ -25,7 +26,7 @@ class CountdownTimer(object):
             self.image = pygame.transform.smoothscale(self.image,
                     (self.screen.get_width(), self.screen.get_height()))
         else:
-            self.bg = None
+            self.image = None
         pygame.display.set_caption("Countdown to {}".format(self.nye.year))
         pygame.mouse.set_visible(0)
     @property
